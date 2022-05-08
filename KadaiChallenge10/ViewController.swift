@@ -32,27 +32,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var identifier = ""
-        var colorRGB: UIColor?
+        tableView.register(
+            UINib(nibName: "PrefeturesTableViewCell", bundle: nil),
+            forCellReuseIdentifier: "PrefeturesTableViewCell")
 
-        switch indexPath.row {
-        case let num where num % 3 == 0:
-            identifier = "Cell1"
-            colorRGB = UIColor.init(red: 255/255, green: 100/255, blue: 100/255, alpha: 100/100)
-        case let num where num % 3 == 1:
-            identifier = "Cell2"
-            colorRGB = UIColor.init(red: 100/255, green: 255/255, blue: 100/255, alpha: 100/100)
-        default:
-            identifier = "Cell3"
-            colorRGB = UIColor.init(red: 100/255, green: 100/255, blue: 255/255, alpha: 100/100)
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PrefeturesTableViewCell", for: indexPath)
+        // swiftlint:disable:next force_cast
+        as! PrefeturesTableViewCell
 
-        tableView.register(UINib(nibName: "PrefeturesTableViewCell", bundle: nil), forCellReuseIdentifier: identifier)
+        cell.configure(name: prefecturesList[indexPath.row], row: indexPath.row)
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? PrefeturesTableViewCell
-        cell?.prefecturesNameLabel.text = prefecturesList[indexPath.row]
-        cell?.prefecturesNumberLabel.text = "\(indexPath.row + 1)番目の都道府県です"
-        cell?.backgroundColor = colorRGB
-        return cell!
+        return cell
     }
 }
